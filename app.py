@@ -8,8 +8,8 @@ CORS(app)
 @app.route('/peli', methods=['GET'])
 def recommend_movies():
         
-        res = recomendacion.get_movie_recommendation(request.args.get('title'))
-        return '''<h1>The language value is: {}</h1>'''.format(res)
+        res = recomendacion.obtener_recomendacion(request.args.get('title'))
+        return '''<h1>Las peliculas recomendadas son: {}</h1>'''.format(res)
         
 
 if __name__=='__main__':
