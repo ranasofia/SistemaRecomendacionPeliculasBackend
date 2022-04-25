@@ -9,7 +9,7 @@ CORS(app)
 def recommend_movies():
         
         res = recomendacion.obtener_recomendacion(request.args.get('title'))
-        return '''<h1>Las peliculas recomendadas son: {}</h1>'''.format(res)
+        return "Las peliculas recomendadas son: {}".format(res)
         
 
 if __name__=='__main__':
