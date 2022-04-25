@@ -17,11 +17,11 @@ ratings_ds.head()
 #Mostrar tabla peliculas
 movies_ds.head()
 #Se aplica la funcion pivot en el DataSet de rating para evitar la repeticion de datos
-dataset_edit = ratings_ds.pivot(index='movieId',columns='userId',values='rating')
-dataset_edit.head()
+dataset_final = ratings_ds.pivot(index='movieId',columns='userId',values='rating')
+dataset_final.head()
 #Se usa la funcion fillna para rellenar de 0 la tabla y que no salgan NaN
-dataset_edit.fillna(0,inplace=True)
-dataset_edit.head()
+dataset_final.fillna(0,inplace=True)
+dataset_final.head()
 #Se filtran los grupos por id de la pelicula y por el id del usuario basandose en la tabla de pivot
 usarios_no_votaron = ratings_ds.groupby('movieId')['rating'].agg('count')
 peliculas_no_votaro  = ratings_ds.groupby('userId')['rating'].agg('count')
@@ -29,7 +29,7 @@ peliculas_no_votaro  = ratings_ds.groupby('userId')['rating'].agg('count')
 usarios_no_votaron  = ratings_ds.groupby('movieId')['rating'].agg('count')
 peliculas_no_votaro  = ratings_ds.groupby('userId')['rating'].agg('count')
 #Se pone una restriccion para que las peliculas por las cuales votaron menos de 10 veces se filtren
-dataset_final = dataset_edit.loc[usarios_no_votaron[usarios_no_votaron > 10].index,:]
+dataset_final = dataset_final.loc[usarios_no_votaron[usarios_no_votaron > 10].index,:]
 #Se pone una restriccion para que los por las cuales votaron menos de 50 veces se filtren
 dataset_final=dataset_final.loc[:,peliculas_no_votaro[peliculas_no_votaro> 50].index]
 dataset_final
@@ -60,7 +60,7 @@ def obtener_recomendacion(titulo_pel):
     if len(lista_pelicula):        
         id_pel = lista_pelicula.iloc[0]['movieId']
         id_pel = dataset_final[dataset_final['movieId'] == id_pel].index[0]
-        distancias , indices = knn.kneighbors(datos[id_pel],n_vecinos=n_pel+1)    
+        distancias , indices = knn.kneighbors(datos[id_pel],n_neighbors=n_pel+1)    
         recomendacion = sorted(list(zip(indices.squeeze().tolist(),distancias.squeeze().tolist())),\
                                key=lambda x: x[1])[:0:-1]
         recommend_frame = []
