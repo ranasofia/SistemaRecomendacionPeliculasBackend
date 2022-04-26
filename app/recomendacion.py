@@ -68,9 +68,10 @@ def obtener_recomendacion(titulo_pel):
         for val in recomendacion:
             id_pel = dataset_final.iloc[val[0]]['movieId']
             idx = movies_ds[movies_ds['movieId'] == id_pel].index
-            recommend_frame.append({'Titulo':movies_ds.iloc[idx]['title'].values[0],'Distancia':val[1]})
+            recommend_frame.append({'Titulo':movies_ds.iloc[idx]['title'].values[0]})
         df = pd.DataFrame(recommend_frame,index=range(1,n_pel+1))
-        return df.to_dict('records')
+        
+        return df
     
     else:
         
