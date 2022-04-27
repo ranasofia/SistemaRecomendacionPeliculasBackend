@@ -48,8 +48,8 @@ datos = csr_matrix(dataset_final.values)
 dataset_final.reset_index(inplace=True)
 
 #Se implementa el coseno 
-knn = NearestNeighbors(metric='minkowski', algorithm='auto', n_neighbors=20, n_jobs=-1)
-knn = NearestNeighbors(metric='minkowski', algorithm='auto', n_neighbors=20, n_jobs=-1)
+knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=20, n_jobs=-1)
+knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=20, n_jobs=-1)
 knn.fit(datos)
 print(knn)
 
