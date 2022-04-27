@@ -4,6 +4,7 @@ from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
 import seaborn as sns
+import json
 
 #Se llaman los datasets 
 movies_ds = pd.read_csv("movies.csv")
@@ -56,7 +57,8 @@ def obtener_recomendacion(titulo_pel):
     #Se revisa si la pelicula ingresada esta en el dataset
     #Se escoge solamente el top 10 de la peliculas a recomendar
     n_pel = 10
-    lista_pelicula = movies_ds[movies_ds['title'].str.contains(titulo_pel)]  
+    lista_pelicula = movies_ds[movies_ds['title'].str.contains(titulo_pel)]
+    dt_name = ['Pelicula 1', 'Pelicula 2', 'Pelicula 3', 'Pelicula 4', 'Pelicula 5', 'Pelicula 6', 'Pelicula 7', 'Pelicula 8', 'Pelicula 9', 'Pelicula 10']
     if len(lista_pelicula):        
         id_pel = lista_pelicula.iloc[0]['movieId']
         id_pel = dataset_final[dataset_final['movieId'] == id_pel].index[0]
@@ -64,14 +66,14 @@ def obtener_recomendacion(titulo_pel):
         recomendacion = sorted(list(zip(indices.squeeze().tolist(),distancias.squeeze().tolist())),\
                                key=lambda x: x[1])[:0:-1]
         recommend_frame = []
-        
         for val in recomendacion:
             id_pel = dataset_final.iloc[val[0]]['movieId']
             idx = movies_ds[movies_ds['movieId'] == id_pel].index
-            recommend_frame.append({'Titulo':movies_ds.iloc[idx]['title'].values[0]})
-        df = pd.DataFrame(recommend_frame,index=range(1,n_pel+1))
-        
-        return df
+            recommend_frame.append({movies_ds.iloc[idx]['title'].values[0]})
+        df_1 = pd.DataFrame(recommend_frame, index=range(1, n_pel+1), columns=['Pelicula'])
+        df = df_1.to_json(orient="columns")
+        parsed = json.loads(df)
+        return parsed
     
     else:
         
