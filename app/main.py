@@ -1,7 +1,7 @@
 from urllib import response
 from fastapi import FastAPI
 import recomendacion
-from fastapi.responses import ORJSONResponse
+import recomendacionM
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,11 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", response_class=ORJSONResponse)
+@app.get("/c")
 async def root(title:str):
         res = recomendacion.obtener_recomendacion(title)
         return res
-
+        
+@app.get("/m")
+async def root(title:str):
+        res = recomendacionM.obtener_recomendacion(title)
+        return res
 
 
 
